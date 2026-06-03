@@ -1,4 +1,4 @@
-import { Flight } from "../models/flight";
+import { Flight } from "./flight.model";
 
 export const MOCK_FLIGHTS: Flight[] = [
   {

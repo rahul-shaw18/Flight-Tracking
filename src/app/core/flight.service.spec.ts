@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
-import { FlightService } from './flight-service';
-import { MOCK_FLIGHTS } from '../map/mock/flight.mock';
+import { FlightService } from './flight.service';
+import { MOCK_FLIGHTS } from './flight.mock';
 
 describe('FlightService', () => {
   let service: FlightService;
@@ -40,6 +40,18 @@ describe('FlightService', () => {
     expect(results.length).toBe(4);
   });
 
+  it('should filter flights accurately based on origin airport', () => {
+    service.originFilter.set('BOM');
+    const results = service.filteredFlights();
+    expect(results.length).toBe(3); // FL001, FL006, FL014
+  });
+
+  it('should filter flights accurately based on destination airport', () => {
+    service.destinationFilter.set('DEL');
+    const results = service.filteredFlights();
+    expect(results.length).toBe(5); // FL001, FL008, FL010, FL015, FL017
+  });
+
   it('should calculate global system KPI metrics accurately from the fleet source', () => {
     const kpis = service.kpis();
     expect(kpis.total).toBe(20);
@@ -53,3 +65,4 @@ describe('FlightService', () => {
     expect(service.selectedFlight()).toBe(MOCK_FLIGHTS[0]);
   });
 });
+

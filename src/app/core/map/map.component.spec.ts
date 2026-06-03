@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Map } from './map';
-import { FlightService } from '../services/flight-service';
+import { MapComponent } from './map.component';
+import { FlightService } from '../flight.service';
 
-describe('Map', () => {
-  let component: Map;
-  let fixture: ComponentFixture<Map>;
+describe('MapComponent', () => {
+  let component: MapComponent;
+  let fixture: ComponentFixture<MapComponent>;
   let service: FlightService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Map],
+      imports: [MapComponent],
       providers: [FlightService],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(Map);
+    fixture = TestBed.createComponent(MapComponent);
     component = fixture.componentInstance;
     service = TestBed.inject(FlightService);
     await fixture.whenStable();
@@ -23,7 +23,8 @@ describe('Map', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
- it('should initialize and mount the map canvas layout wrapper correctly', () => {
+
+  it('should initialize and mount the map canvas layout wrapper correctly', () => {
     expect(component).toBeTruthy();
     
     const container = fixture.nativeElement.querySelector('div');
@@ -33,12 +34,14 @@ describe('Map', () => {
   it('should mount both the stationary airport markers and dynamic plane icons onto the map layer', () => {
     const renderedMarkers = fixture.nativeElement.querySelectorAll('.leaflet-marker-icon');
     
-    expect(renderedMarkers.length).toBe(60);
+    // 14 unique airports + 20 planes = 34 markers total
+    expect(renderedMarkers.length).toBe(34);
   });
 
   it('should dispatch the path routing line and expose the details popover window when an active plane icon is clicked', () => {
     const planeIcons = fixture.nativeElement.querySelectorAll('.leaflet-marker-icon');
-    const firstPlane = planeIcons[2] as HTMLElement; 
+    // Planes are drawn after the 14 airport markers, so index 14 is the first plane
+    const firstPlane = planeIcons[14] as HTMLElement; 
 
     firstPlane.click();
     fixture.detectChanges();
@@ -60,13 +63,13 @@ describe('Map', () => {
 
     const popupBubble = fixture.nativeElement.querySelector('.leaflet-popup-content');
     expect(popupBubble).toBeTruthy();
-    expect(popupBubble?.textContent).toContain('Origin:');
+    expect(popupBubble?.textContent).toContain('Airport:');
   });
 
   it('should disable and strip down the previous flight tracking vector path line when a different plane target is selected', () => {
     const planeIcons = fixture.nativeElement.querySelectorAll('.leaflet-marker-icon');
-    const firstPlane = planeIcons[2] as HTMLElement;
-    const secondPlane = planeIcons[5] as HTMLElement;
+    const firstPlane = planeIcons[14] as HTMLElement;
+    const secondPlane = planeIcons[15] as HTMLElement;
 
     firstPlane.click();
     fixture.detectChanges();

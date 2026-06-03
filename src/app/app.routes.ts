@@ -4,6 +4,6 @@ export const routes: Routes = [
   {
     path: '',
     title: 'Flight Tracking Dashboard',
-    loadComponent: () => import('./core/map/map').then((m) => m.Map),
+    loadComponent: () => import('./core/map/map.component').then((m) => m.MapComponent),
   },
 ];

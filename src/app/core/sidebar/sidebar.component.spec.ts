@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Sidebar } from './sidebar';
-import { FlightService } from '../services/flight-service';
+import { SidebarComponent } from './sidebar.component';
+import { FlightService } from '../flight.service';
 
-describe('Sidebar', () => {
-  let component: Sidebar;
-  let fixture: ComponentFixture<Sidebar>;
+describe('SidebarComponent', () => {
+  let component: SidebarComponent;
+  let fixture: ComponentFixture<SidebarComponent>;
   let service: FlightService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Sidebar],
+      imports: [SidebarComponent],
       providers: [FlightService],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(Sidebar);
+    fixture = TestBed.createComponent(SidebarComponent);
     component = fixture.componentInstance;
     service = TestBed.inject(FlightService);
     await fixture.whenStable();
@@ -22,37 +22,68 @@ describe('Sidebar', () => {
 
   it('should create the component and initialize the reactive form group structure', () => {
     expect(component).toBeTruthy();
-    expect(component.filterForm.contains('searchTerm')).toBeTruthy();
-    expect(component.filterForm.contains('statusFilter')).toBeTruthy();
-    expect(component.filterForm.value).toEqual({ searchTerm: '', statusFilter: 'All' });
+    expect(component['filterForm'].contains('searchTerm')).toBeTruthy();
+    expect(component['filterForm'].contains('statusFilter')).toBeTruthy();
+    expect(component['filterForm'].contains('originFilter')).toBeTruthy();
+    expect(component['filterForm'].contains('destinationFilter')).toBeTruthy();
+    expect(component['filterForm'].value).toEqual({
+      searchTerm: '',
+      statusFilter: 'All',
+      originFilter: 'All',
+      destinationFilter: 'All',
+    });
   });
 
-  it('should stream form control updates immediately into the central state signals', () => {
-    component.filterForm.patchValue({
+  it('should stream form control updates immediately into the central state signals', async () => {
+    component['filterForm'].patchValue({
       searchTerm: 'IGO900',
       statusFilter: 'Delayed',
+      originFilter: 'CCU',
+      destinationFilter: 'DEL',
     });
+    await new Promise((resolve) => setTimeout(resolve, 220)); // Wait for 200ms debounce
+    fixture.detectChanges();
+
     expect(service.searchTerm()).toBe('IGO900');
     expect(service.statusFilter()).toBe('Delayed');
+    expect(service.originFilter()).toBe('CCU');
+    expect(service.destinationFilter()).toBe('DEL');
   });
 
-  it('should fallback to default values in the signals when form control parameters are cleared', () => {
-    component.filterForm.patchValue({
+  it('should fallback to default values in the signals when form control parameters are cleared', async () => {
+    component['filterForm'].patchValue({
       searchTerm: 'IGO900',
       statusFilter: 'Delayed',
+      originFilter: 'CCU',
+      destinationFilter: 'DEL',
     });
+    await new Promise((resolve) => setTimeout(resolve, 220));
+    fixture.detectChanges();
+
     expect(service.searchTerm()).toBe('IGO900');
     expect(service.statusFilter()).toBe('Delayed');
+    expect(service.originFilter()).toBe('CCU');
+    expect(service.destinationFilter()).toBe('DEL');
 
-    component.handleReset();
-    expect(component.filterForm.value).toStrictEqual({ searchTerm: null, statusFilter: null });
+    component['resetFilters']();
+    await new Promise((resolve) => setTimeout(resolve, 220));
+    fixture.detectChanges();
+
+    expect(component['filterForm'].value).toStrictEqual({
+      searchTerm: '',
+      statusFilter: 'All',
+      originFilter: 'All',
+      destinationFilter: 'All',
+    });
+    expect(service.searchTerm()).toBe('');
+    expect(service.statusFilter()).toBe('All');
   });
 
   it('should display the correct real-time computed statistics inside the KPI grid template cards', () => {
-    expect(component.kpis.total).toBe(20);
-    expect(component.kpis.active).toBe(12);
-    expect(component.kpis.arrived).toBe(4);
-    expect(component.kpis.delayed).toBe(4);
+    expect(component['kpis']().total).toBe(20);
+    expect(component['kpis']().active).toBe(12);
+    expect(component['kpis']().arrived).toBe(4);
+    expect(component['kpis']().delayed).toBe(4);
   });
 
   it('should render the fallback empty state description layout when no flight is active in the selection signal', () => {
@@ -85,3 +116,5 @@ describe('Sidebar', () => {
     expect(service.selectedFlight()).toBeNull();
   });
 });
+
+
