@@ -1,12 +1,10 @@
 import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Sidebar } from './core/sidebar/sidebar';
+import { Map } from './core/map/map';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
-  templateUrl: './app.html',
-  styleUrl: './app.css'
+  imports: [ Sidebar, Map],
+  templateUrl: './app.html'
 })
-export class App {
-  protected readonly title = signal('Flight-Tracking');
-}
+export class App {}
