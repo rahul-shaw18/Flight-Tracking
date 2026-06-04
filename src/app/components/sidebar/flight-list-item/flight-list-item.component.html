@@ -1,26 +1,25 @@
 <div
   (click)="select.emit()"
-  class="group p-3 rounded-md border transition-all duration-200 cursor-pointer flex flex-col gap-1.5"
-  [class]="
-    isSelected()
-      ? 'bg-steel border-indigo shadow-sm'
-      : 'bg-obsidian border-graphite hover:border-iron'
-  "
+  class="group p-3.5 rounded-2xl border transition-all duration-300 cursor-pointer flex flex-col gap-3 shadow-[0_4px_15px_rgba(0,0,0,0.02)] dark:shadow-[0_4px_20px_rgba(0,0,0,0.25)]"
+  [class]="cardClass()"
 >
-  <div class="flex justify-between items-center">
-    <span
-      class="font-w590 text-sm transition-colors"
-      [class]="isSelected() ? 'text-indigo' : 'text-snow'"
-    >
-      {{ flight().flightNumber }}
-    </span>
+  <!-- Card Header Row -->
+  <div class="flex justify-between items-start">
+    <div class="space-y-0.5">
+      <span class="font-w590 text-sm tracking-tight text-snow">
+        {{ flight().flightNumber }}
+      </span>
+      <span class="font-mono text-fog text-[10px] block leading-none">{{ flight().callsign }}</span>
+    </div>
+    
     <div
-      class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-sm text-[10px] font-w510 tracking-wide bg-onyx/50"
+      class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[9px] font-w590 tracking-wide border"
+      [class]="statusColor()"
     >
       <span
-        class="w-1.5 h-1.5 rounded-full"
+        class="w-1 h-1 rounded-full"
         [class]="{
-          'bg-emerald': flight().status === 'Active',
+          'bg-emerald animate-pulse': flight().status === 'Active',
           'bg-crimson': flight().status === 'Delayed',
           'bg-cyan': flight().status === 'Arrived',
         }"
@@ -29,12 +28,30 @@
     </div>
   </div>
 
-  <div class="flex justify-between items-center text-xs mt-0.5">
-    <span class="font-mono text-fog text-[11px]">{{ flight().callsign }}</span>
+  <!-- Bottom Route & Icons Row -->
+  <div class="flex justify-between items-center text-xs pt-2 border-t border-graphite/10 dark:border-graphite/20">
     <div class="flex items-center gap-1.5 font-mono text-[11px]">
-      <span class="font-w510 text-mist">{{ flight().origin }}</span>
+      <span class="font-w590 text-snow">{{ flight().origin }}</span>
       <span class="text-slate text-[10px]">➔</span>
-      <span class="font-w510 text-mist">{{ flight().destination }}</span>
+      <span class="font-w590 text-snow">{{ flight().destination }}</span>
+    </div>
+
+    <!-- Operating Status Icons (Image 3 right side) -->
+    <div class="flex items-center space-x-2 text-slate/85 dark:text-fog/75">
+      <!-- Clock Icon -->
+      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="9" />
+        <polyline points="12 7 12 12 14 14" />
+      </svg>
+      <!-- Route Icon -->
+      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+      </svg>
+      <!-- Plane Landing Icon -->
+      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" transform="rotate(10)">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M19 13l-8-5-8 5v-2l8-5 8 5z" />
+        <line x1="2" y1="20" x2="22" y2="20" />
+      </svg>
     </div>
   </div>
 </div>

@@ -103,17 +103,17 @@
         @for (flight of departures(); track flight.id) {
           <div
             (click)="selectFlight(flight)"
-            class="bg-obsidian border border-graphite hover:border-iron rounded-md p-2.5 flex items-center justify-between cursor-pointer transition-all"
+            class="bg-emerald/[0.015] dark:bg-emerald/[0.03] border border-emerald/20 dark:border-emerald/30 hover:border-emerald/45 rounded-xl p-3 flex items-center justify-between cursor-pointer transition-all"
           >
             <div>
               <span class="font-w590 text-xs text-snow block">{{ flight.flightNumber }}</span>
-              <span class="text-[9px] font-mono text-fog block">To: {{ flight.destination }}</span>
+              <span class="text-[9px] font-mono text-fog block mt-0.5">To: {{ flight.destination }}</span>
             </div>
             <div class="text-right">
               <span class="text-[10px] text-fog font-mono block">{{
                 flight.estimatedDeparture | date: 'shortTime'
               }}</span>
-              <span class="text-[9px] text-emerald block font-w510">Active</span>
+              <span class="text-[9px] text-emerald block font-w590 mt-0.5">Active</span>
             </div>
           </div>
         } @empty {
@@ -123,17 +123,17 @@
         @for (flight of arrivals(); track flight.id) {
           <div
             (click)="selectFlight(flight)"
-            class="bg-obsidian border border-graphite hover:border-iron rounded-md p-2.5 flex items-center justify-between cursor-pointer transition-all"
+            class="bg-cyan/[0.015] dark:bg-cyan/[0.03] border border-cyan/20 dark:border-cyan/30 hover:border-cyan/45 rounded-xl p-3 flex items-center justify-between cursor-pointer transition-all"
           >
             <div>
               <span class="font-w590 text-xs text-snow block">{{ flight.flightNumber }}</span>
-              <span class="text-[9px] font-mono text-fog block">From: {{ flight.origin }}</span>
+              <span class="text-[9px] font-mono text-fog block mt-0.5">From: {{ flight.origin }}</span>
             </div>
             <div class="text-right">
               <span class="text-[10px] text-fog font-mono block">{{
                 flight.estimatedArrival | date: 'shortTime'
               }}</span>
-              <span class="text-[9px] text-cyan block font-w510">Arriving</span>
+              <span class="text-[9px] text-cyan block font-w590 mt-0.5">Arriving</span>
             </div>
           </div>
         } @empty {

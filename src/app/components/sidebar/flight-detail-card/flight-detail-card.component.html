@@ -1,24 +1,31 @@
 <div
-  class="h-full flex flex-col bg-charcoal text-snow overflow-hidden select-none relative animate-slide-in"
+  class="absolute inset-0 flex flex-col p-5 space-y-5 overflow-hidden bg-charcoal"
+  animate.enter="animate-slide-in-delayed"
+  animate.leave="animate-slide-out"
 >
   <!-- Top Title Panel -->
-  <div class="p-4 flex justify-between items-start border-b border-graphite">
-    <div>
-      <span class="text-[10px] font-mono text-fog uppercase tracking-wider block"
-        >Flight Radar Track</span
+  <div class="flex justify-between items-center border-b border-graphite/20 pb-3">
+    <div class="flex items-center space-x-2.5">
+      <div
+        class="w-8 h-8 rounded-full bg-onyx/80 dark:bg-onyx flex items-center justify-center border border-graphite/60 shadow-inner"
       >
-      <h2 class="text-xl text-snow tracking-tight leading-tight mt-0.5">
-        {{ flight().flightNumber }}
-      </h2>
-      <span class="text-[10px] text-indigo uppercase font-w510 tracking-wider"
-        >Airline Operator</span
-      >
+        <span class="text-[11px] font-bold text-snow tracking-wider">SO</span>
+      </div>
+      <div class="flex flex-col">
+        <h1 class="text-xs font-w590 tracking-wide uppercase text-snow leading-none">
+          SkyOps Control
+        </h1>
+        <span class="text-[8px] font-mono tracking-widest text-emerald uppercase mt-1 leading-none"
+          >FLIGHT DETAILS</span
+        >
+      </div>
     </div>
     <button
       (click)="clear.emit()"
-      class="text-[10px] text-fog hover:text-snow uppercase tracking-widest font-w510 transition-colors cursor-pointer"
+      class="w-6 h-6 rounded-full bg-steel/30 hover:bg-steel/50 border border-graphite/40 text-snow hover:text-indigo cursor-pointer transition-all flex items-center justify-center text-xs"
+      aria-label="Close Filters"
     >
-      Close ✕
+      ✕
     </button>
   </div>
 
@@ -26,7 +33,7 @@
   <div class="flex-1 overflow-y-auto custom-scrollbar">
     <!-- Aircraft Image Mockup -->
     <div
-      class="relative w-full h-40 bg-obsidian border-b border-graphite flex items-center justify-center overflow-hidden"
+      class="relative w-full h-40 bg-obsidian border-b border-graphite/20 flex items-center justify-center overflow-hidden"
     >
       <div class="absolute inset-0 bg-linear-to-t from-charcoal to-transparent z-10"></div>
       <div class="absolute inset-0 flex items-center justify-center opacity-10">
@@ -37,7 +44,7 @@
         </svg>
       </div>
       <div
-        class="absolute top-2 left-3 z-20 bg-onyx/60 px-2 py-0.5 rounded text-[10px] text-snow font-mono"
+        class="absolute top-2 left-3 z-20 bg-onyx/60 px-2 py-0.5 rounded text-[10px] text-snow font-mono border border-graphite/30"
       >
         {{ flight().aircraftType }}
       </div>
@@ -48,32 +55,34 @@
 
     <!-- Origin & Destination Block -->
     <div
-      class="flex items-center justify-between px-4 py-4 bg-obsidian/30 border-b border-graphite"
+      class="flex items-center justify-between px-5 py-4 border-b border-graphite/10 dark:border-graphite/20"
+      [class]="sectionClass()"
     >
       <div class="text-left">
         <h3 class="text-3xl font-w590 text-snow tracking-tight font-mono">
           {{ flight().origin }}
         </h3>
-        <span class="text-[10px] text-fog uppercase block mt-1 tracking-wider font-sans"
+        <span class="text-[9px] text-fog uppercase block mt-1 tracking-widest font-sans"
           >Origin</span
         >
       </div>
-      <div class="text-indigo text-lg animate-pulse font-sans">➔</div>
+      <div class="text-lg animate-pulse font-sans" [class]="statusTextClass()">➔</div>
       <div class="text-right">
         <h3 class="text-3xl font-w590 text-snow tracking-tight font-mono">
           {{ flight().destination }}
         </h3>
-        <span class="text-[10px] text-fog uppercase block mt-1 tracking-wider font-sans"
+        <span class="text-[9px] text-fog uppercase block mt-1 tracking-widest font-sans"
           >Destination</span
         >
       </div>
     </div>
 
     <!-- Progress Bar -->
-    <div class="px-4 py-3 border-b border-graphite space-y-1.5">
+    <div class="px-5 py-4 border-b border-graphite/10 dark:border-graphite/20 space-y-2">
       <div class="relative w-full h-1 bg-steel rounded-full overflow-hidden">
         <div
-          class="absolute top-0 left-0 h-full bg-acid-lime rounded-full"
+          class="absolute top-0 left-0 h-full rounded-full transition-all duration-300"
+          [class]="progressColorClass()"
           [style.width.%]="
             flightService.isAnimating()
               ? flightService.animationProgress()
@@ -85,9 +94,11 @@
           "
         ></div>
       </div>
-      <div class="flex justify-between items-center text-[9px] text-fog uppercase tracking-wider">
+      <div
+        class="flex justify-between items-center text-[9px] text-fog uppercase tracking-wider font-w590"
+      >
         <span>Flight Progress</span>
-        <span class="font-w590 text-snow">
+        <span class="font-w590" [class]="statusTextClass()">
           {{
             flightService.isAnimating()
               ? flightService.animationProgress() >= 100
@@ -102,18 +113,20 @@
     </div>
 
     <!-- Playback Simulation Controls -->
-    <div class="px-4 py-4 bg-obsidian border-b border-graphite space-y-3">
+    <div
+      class="px-5 py-4 bg-obsidian/35 border-b border-graphite/10 dark:border-graphite/20 space-y-3.5"
+    >
       <div class="flex items-center justify-between">
-        <span class="text-[10px] font-w590 text-indigo uppercase tracking-wider"
+        <span class="text-[9px] font-w590 text-indigo uppercase tracking-wider"
           >Flight Simulator Playback</span
         >
         @if (flightService.isAnimating()) {
           <span
-            class="text-[9px] bg-emerald/20 text-emerald px-1.5 py-0.5 rounded font-mono animate-pulse"
+            class="text-[9px] bg-emerald/20 text-emerald px-2 py-0.5 rounded font-mono animate-pulse"
             >SIMULATING</span
           >
         } @else {
-          <span class="text-[9px] bg-steel text-fog px-1.5 py-0.5 rounded font-mono">STANDBY</span>
+          <span class="text-[9px] bg-steel text-fog px-2 py-0.5 rounded font-mono">STANDBY</span>
         }
       </div>
 
@@ -121,7 +134,7 @@
         <!-- Play / Pause Button -->
         <button
           (click)="togglePlayback()"
-          class="px-3.5 py-1.5 bg-indigo hover:bg-indigo/80 text-snow text-[11px] font-w590 rounded-inputs cursor-pointer transition-colors"
+          class="px-4 py-2 bg-indigo hover:bg-indigo/90 text-snow text-[11px] font-w590 rounded-xl cursor-pointer shadow-md shadow-indigo/10 transition-all duration-200"
         >
           {{ flightService.isAnimating() ? '⏸ Pause' : '▶ Play' }}
         </button>
@@ -129,7 +142,7 @@
         <!-- Speed Selector -->
         <select
           (change)="onSpeedChange($event)"
-          class="bg-steel border w-24 border-graphite rounded-inputs text-[10px] text-snow px-2 py-1.5 focus:outline-none cursor-pointer"
+          class="bg-steel border w-24 border-graphite rounded-xl text-[11px] text-snow px-2.5 py-2 focus:outline-none cursor-pointer transition-all duration-200"
         >
           <option [value]="1" [selected]="flightService.animationSpeed() === 1">1x Speed</option>
           <option [value]="5" [selected]="flightService.animationSpeed() === 5">5x Speed</option>
@@ -140,14 +153,14 @@
         <!-- Reset Button -->
         <button
           (click)="resetPlayback()"
-          class="px-2.5 py-1.5 bg-steel hover:bg-iron text-snow text-[11px] font-w510 rounded-inputs cursor-pointer transition-colors"
+          class="px-3.5 py-2 bg-steel hover:bg-iron border border-graphite/40 text-snow text-[11px] font-w590 rounded-xl cursor-pointer transition-all duration-200"
         >
           Reset
         </button>
       </div>
 
       <!-- Scrubber Slider -->
-      <div class="space-y-1">
+      <div class="space-y-1.5 pt-1">
         <div class="flex justify-between text-[9px] text-fog font-mono">
           <span>{{ flightService.animationProgress() | number: '1.0-0' }}% Completed</span>
           @if (flightService.animatedCoordinates(); as coords) {
@@ -164,13 +177,16 @@
           step="0.5"
           [value]="flightService.animationProgress()"
           (input)="onProgressChange($event)"
-          class="w-full h-1 bg-steel rounded-full appearance-none cursor-pointer accent-acid-lime"
+          class="w-full h-1 bg-steel rounded-full appearance-none cursor-pointer accent-indigo"
+          [class.accent-emerald]="flight().status === 'Active'"
+          [class.accent-crimson]="flight().status === 'Delayed'"
+          [class.accent-cyan]="flight().status === 'Arrived'"
         />
       </div>
     </div>
 
     <!-- Detail Grid -->
-    <div class="grid grid-cols-2 gap-x-4 gap-y-3 px-4 py-4 text-xs">
+    <div class="grid grid-cols-2 gap-x-4 gap-y-4 px-5 py-4 text-xs">
       <div>
         <span class="text-[9px] text-slate block uppercase tracking-wider font-w510"
           >Scheduled Dep</span
@@ -188,10 +204,23 @@
         }}</span>
       </div>
       <div>
-        <span class="text-[9px] text-slate block uppercase tracking-wider font-w510"
+        <span class="text-[9px] text-slate block uppercase tracking-wider font-w510 mb-0.5"
           >Current Status</span
         >
-        <app-status-badge [status]="flight().status" class="mt-0.5 block"></app-status-badge>
+        <div
+          class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[9px] font-w590 tracking-wide border mt-0.5"
+          [class]="statusColor()"
+        >
+          <span
+            class="w-1 h-1 rounded-full"
+            [class]="{
+              'bg-emerald animate-pulse': flight().status === 'Active',
+              'bg-crimson': flight().status === 'Delayed',
+              'bg-cyan': flight().status === 'Arrived',
+            }"
+          ></span>
+          <app-status-badge [status]="flight().status"></app-status-badge>
+        </div>
       </div>
       <div>
         <span class="text-[9px] text-slate block uppercase tracking-wider font-w510"
