@@ -34,7 +34,7 @@ export class FlightService {
   animatedCoordinates = signal<[number, number] | null>(null);
   animatedHeading = signal<number | null>(null);
 
-  private animationInterval: any = null;
+  private animationInterval: number | null = null;
 
   selectFlight(flight: Flight): void {
     this.selectedAirport.set(null);

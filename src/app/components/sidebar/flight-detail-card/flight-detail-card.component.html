@@ -129,12 +129,12 @@
         <!-- Speed Selector -->
         <select
           (change)="onSpeedChange($event)"
-          class="bg-steel border border-graphite rounded-inputs text-[10px] text-snow px-2 py-1.5 focus:outline-none cursor-pointer"
+          class="bg-steel border w-24 border-graphite rounded-inputs text-[10px] text-snow px-2 py-1.5 focus:outline-none cursor-pointer"
         >
           <option [value]="1" [selected]="flightService.animationSpeed() === 1">1x Speed</option>
           <option [value]="5" [selected]="flightService.animationSpeed() === 5">5x Speed</option>
-          <option [value]="15" [selected]="flightService.animationSpeed() === 15">15x Speed</option>
-          <option [value]="50" [selected]="flightService.animationSpeed() === 50">50x Speed</option>
+          <option [value]="10" [selected]="flightService.animationSpeed() === 10">10x Speed</option>
+          <option [value]="20" [selected]="flightService.animationSpeed() === 20">20x Speed</option>
         </select>
 
         <!-- Reset Button -->
