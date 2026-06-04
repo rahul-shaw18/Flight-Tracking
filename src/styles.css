@@ -1,34 +1,77 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
 
 @import 'tailwindcss';
 @import "leaflet/dist/leaflet.css";
 
+@theme {
+  /* Colors */
+  --color-onyx: #08090a;
+  --color-charcoal: #0f1011;
+  --color-obsidian: #161718;
+  --color-graphite: #23252a;
+  --color-iron: #323334;
+  --color-steel: #383b3f;
+  --color-slate: #62666d;
+  --color-fog: #8a8f98;
+  --color-mist: #d0d6e0;
+  --color-platinum: #e5e5e6;
+  --color-snow: #f7f8f8;
+  --color-acid-lime: #e4f222;
+  --color-indigo: #5e6ad2;
+  --color-emerald: #27a644;
+  --color-crimson: #eb5757;
+  --color-cyan: #02b8cc;
+
+  /* Typography */
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* Typography — Weights */
+  --font-weight-w510: 510;
+  --font-weight-w590: 590;
+
+  /* Border Radius */
+  --radius-nav: 6px;
+  --radius-cards: 12px;
+  --radius-pills: 9999px;
+  --radius-badges: 2px;
+  --radius-inputs: 6px;
+  --radius-buttons: 6px;
+
+  /* Shadows */
+  --shadow-sm: rgba(0, 0, 0, 0.4) 0px 2px 4px 0px;
+  --shadow-md: rgba(0, 0, 0, 0.2) 0px 0px 12px 0px inset;
+  --shadow-subtle: rgb(35, 37, 42) 0px 0px 0px 1px inset;
+  --shadow-subtle-2: rgba(0, 0, 0, 0.2) 0px 0px 0px 1px;
+  --shadow-subtle-3: rgba(0, 0, 0, 0.01) 0px 5px 2px 0px, rgba(0, 0, 0, 0.04) 0px 3px 2px 0px, rgba(0, 0, 0, 0.07) 0px 1px 1px 0px, rgba(0, 0, 0, 0.08) 0px 0px 1px 0px;
+  --shadow-xl: rgba(8, 9, 10, 0.6) 0px 4px 32px 0px;
+}
+
 /* Custom Premium Leaflet Popup Styling */
 .leaflet-popup-content-wrapper {
-  background: rgba(15, 23, 42, 0.95) !important;
-  backdrop-filter: blur(8px) !important;
-  border: 1px solid rgba(56, 189, 248, 0.2) !important;
-  color: #f1f5f9 !important;
+  background: var(--color-charcoal) !important;
+  border: 1px solid var(--color-graphite) !important;
+  color: var(--color-snow) !important;
   border-radius: 12px !important;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -4px rgba(0, 0, 0, 0.5) !important;
+  box-shadow: var(--shadow-xl) !important;
   padding: 4px !important;
-  font-family: inherit !important;
+  font-family: var(--font-sans) !important;
 }
 
 .leaflet-popup-tip {
-  background: rgba(15, 23, 42, 0.95) !important;
-  border-left: 1px solid rgba(56, 189, 248, 0.2) !important;
-  border-top: 1px solid rgba(56, 189, 248, 0.2) !important;
+  background: var(--color-charcoal) !important;
+  border-left: 1px solid var(--color-graphite) !important;
+  border-top: 1px solid var(--color-graphite) !important;
 }
 
 .leaflet-popup-close-button {
-  color: #94a3b8 !important;
+  color: var(--color-fog) !important;
   padding: 8px 12px !important;
   font-size: 14px !important;
 }
 
 .leaflet-popup-close-button:hover {
-  color: #f1f5f9 !important;
+  color: var(--color-snow) !important;
   background: transparent !important;
 }
 
@@ -42,12 +85,121 @@
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(56, 189, 248, 0.15);
+  background: var(--color-graphite);
   border-radius: 9999px;
   transition: background 0.2s ease;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: rgba(56, 189, 248, 0.35);
+  background: var(--color-iron);
+}
+
+/* Dynamic slide-in and fade-in overlay transitions */
+@keyframes slideIn {
+  from {
+    transform: translateX(-30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-slide-in {
+  animation: slideIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-slide-in-delayed {
+  animation: slideIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 0.22s;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.18s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-30px);
+    opacity: 0;
+  }
+}
+
+.animate-slide-out {
+  animation: slideOut 0.22s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.custom-airport-icon {
+  filter: invert(53%) sepia(91%) saturate(1478%) hue-rotate(170deg) brightness(103%) contrast(97%) !important;
+}
+
+/* Light Theme Variable Overrides */
+:root.light-mode {
+  --color-onyx: #f3f4f6;
+  --color-charcoal: #ffffff;
+  --color-obsidian: #f9fafb;
+  --color-graphite: #e5e7eb;
+  --color-iron: #d1d5db;
+  --color-steel: #f3f4f6;
+  --color-slate: #6b7280;
+  --color-fog: #4b5563;
+  --color-mist: #1f2937;
+  --color-platinum: #111827;
+  --color-snow: #111827;
+  --color-acid-lime: #4f46e5;
+  --color-indigo: #3b82f6;
+  --color-emerald: #16a34a;
+  --color-crimson: #dc2626;
+  --color-cyan: #0891b2;
+}
+
+/* Leaflet Zoom Control Theme Overrides */
+.leaflet-bar {
+  border: 1px solid var(--color-graphite) !important;
+  box-shadow: var(--shadow-sm) !important;
+}
+.leaflet-bar a {
+  background-color: var(--color-charcoal) !important;
+  color: var(--color-snow) !important;
+  border-bottom: 1px solid var(--color-graphite) !important;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.leaflet-bar a:hover {
+  background-color: var(--color-obsidian) !important;
+  color: var(--color-platinum) !important;
+}
+
+/* Weather Overlays Pulse Animation */
+@keyframes weatherPulse {
+  0% {
+    fill-opacity: 0.12;
+    stroke-opacity: 0.5;
+  }
+  50% {
+    fill-opacity: 0.22;
+    stroke-opacity: 0.8;
+  }
+  100% {
+    fill-opacity: 0.12;
+    stroke-opacity: 0.5;
+  }
+}
+
+.weather-pulse-zone {
+  animation: weatherPulse 4s infinite ease-in-out;
 }
 

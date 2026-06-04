@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { FlightService } from './flight.service';
-import { MOCK_FLIGHTS } from './flight.mock';
+import { MOCK_FLIGHTS } from '../constants/flight.mock';
 
 describe('FlightService', () => {
   let service: FlightService;
@@ -60,9 +60,44 @@ describe('FlightService', () => {
     expect(kpis.delayed).toBe(4);
   });
 
-  it('should manage flight selection tracking targets cleanly', () => {
+  it('should manage flight selection tracking targets cleanly and reset animation state', () => {
     service.selectFlight(MOCK_FLIGHTS[0]);
     expect(service.selectedFlight()).toBe(MOCK_FLIGHTS[0]);
+    expect(service.isAnimating()).toBeFalsy();
+    expect(service.animationProgress()).toBe(0);
+    expect(service.animatedCoordinates()).toBeNull();
+  });
+
+  it('should manage theme toggling state', () => {
+    expect(service.isDarkMode()).toBe(true);
+    service.isDarkMode.set(false);
+    expect(service.isDarkMode()).toBe(false);
+  });
+
+  it('should toggle weather overlay layers state', () => {
+    expect(service.showCloudOverlay()).toBe(false);
+    expect(service.showRainOverlay()).toBe(false);
+    expect(service.showSunOverlay()).toBe(false);
+
+    service.showCloudOverlay.set(true);
+    expect(service.showCloudOverlay()).toBe(true);
+  });
+
+  it('should animate flight playback coordinates correctly over route path', () => {
+    const flight = MOCK_FLIGHTS[0]; // BOM to DEL
+    service.selectFlight(flight);
+
+    // Simulate setting progress to 50%
+    service.setPlaybackProgress(50);
+    expect(service.animationProgress()).toBe(50);
+
+    const animatedCoords = service.animatedCoordinates();
+    expect(animatedCoords).not.toBeNull();
+    // Route is [[19.076, 72.8777], [22.5, 74.0], [25.0, 76.5], [28.5562, 77.1003]]
+    expect(animatedCoords![0]).toBeGreaterThan(19.0);
+    expect(animatedCoords![0]).toBeLessThan(29.0);
+
+    service.stopPlayback();
+    expect(service.isAnimating()).toBe(false);
   });
 });
-

@@ -1,0 +1,82 @@
+<div #mapContainer class="w-full h-full min-h-125 relative">
+  <!-- Dynamic Flightradar24 bottom dock overlay -->
+</div>
+<div
+  class="absolute bottom-6 left-1/2 -translate-x-1/2 z-1000 mx-auto w-max bg-charcoal/95 border border-graphite px-5 py-2.5 rounded-full shadow-2xl flex items-center space-x-6 backdrop-blur-md"
+>
+  <button
+    (click)="toggleKPI()"
+    class="flex flex-col items-center justify-center text-[10px] text-fog hover:text-snow cursor-pointer transition-colors group border-none bg-transparent"
+  >
+    <span class="text-sm group-hover:scale-115 transition-transform w-4 h-4">
+      <img src="icons/kpi.svg" alt="" />
+    </span>
+    <span class="mt-0.5 tracking-wider font-w510" [class.text-acid-lime]="flightService.showKPI()"
+      >KPI</span
+    >
+  </button>
+
+  <button
+    (click)="toggleFilters()"
+    class="flex flex-col items-center justify-center text-[10px] text-fog hover:text-snow cursor-pointer transition-colors group border-none bg-transparent"
+  >
+    <span class="text-sm group-hover:scale-115 transition-transform w-4 h-4">
+      <img src="icons/filter.svg" alt="" />
+    </span>
+    <span
+      class="mt-0.5 tracking-wider font-w510 transition-colors"
+      [class.text-acid-lime]="flightService.showFilterPanel()"
+      >Filters</span
+    >
+  </button>
+
+  <button
+    (click)="toggleTraffic()"
+    class="flex flex-col items-center justify-center text-[10px] text-fog hover:text-snow cursor-pointer transition-colors group border-none bg-transparent"
+  >
+    <span class="text-sm group-hover:scale-115 transition-transform w-4 h-4">
+      <img src="icons/airplane.svg" alt="" />
+    </span>
+    <span
+      class="mt-0.5 tracking-wider font-w510 transition-colors"
+      [class.text-acid-lime]="flightService.showTrafficPanel()"
+      >Traffic</span
+    >
+  </button>
+
+  <button
+    (click)="toggleCloud()"
+    class="flex flex-col items-center justify-center text-[10px] text-fog hover:text-snow cursor-pointer transition-colors group border-none bg-transparent"
+  >
+    <span class="text-sm group-hover:scale-115 transition-transform w-4 h-4">
+      <img src="icons/clouds.svg" alt="" />
+    </span>
+    <span
+      class="mt-0.5 tracking-wider font-w510 transition-colors"
+      [class.text-acid-lime]="flightService.showCloudPanel()"
+      >Clouds</span
+    >
+  </button>
+
+  <button
+    (click)="toggleTheme()"
+    class="flex flex-col items-center justify-center text-[10px] text-fog hover:text-snow cursor-pointer transition-colors group border-none bg-transparent"
+  >
+    <span class="text-sm group-hover:scale-115 transition-transform w-4 h-4 flex items-center justify-center">
+      @if (flightService.isDarkMode()) {
+        🌙
+      } @else {
+        ☀️
+      }
+    </span>
+    <span class="mt-0.5 tracking-wider font-w510">Theme</span>
+  </button>
+
+  <button
+    (click)="resetAllFilters()"
+    class="flex flex-col items-center justify-center text-[10px] text-fog hover:text-snow cursor-pointer transition-colors group border-none bg-transparent"
+  >
+    <span class="text-sm group-hover:scale-115 transition-transform">↺</span>
+    <span class="mt-0.5 tracking-wider font-w510">Reset</span>
+  </button>
+</div>

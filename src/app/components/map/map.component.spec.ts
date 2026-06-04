@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MapComponent } from './map.component';
-import { FlightService } from '../flight.service';
+import { FlightService } from '../../core/services/flight.service';
 
 describe('MapComponent', () => {
   let component: MapComponent;
@@ -26,14 +26,14 @@ describe('MapComponent', () => {
 
   it('should initialize and mount the map canvas layout wrapper correctly', () => {
     expect(component).toBeTruthy();
-    
+
     const container = fixture.nativeElement.querySelector('div');
     expect(container).toBeTruthy();
   });
 
   it('should mount both the stationary airport markers and dynamic plane icons onto the map layer', () => {
     const renderedMarkers = fixture.nativeElement.querySelectorAll('.leaflet-marker-icon');
-    
+
     // 14 unique airports + 20 planes = 34 markers total
     expect(renderedMarkers.length).toBe(34);
   });
@@ -41,7 +41,7 @@ describe('MapComponent', () => {
   it('should dispatch the path routing line and expose the details popover window when an active plane icon is clicked', () => {
     const planeIcons = fixture.nativeElement.querySelectorAll('.leaflet-marker-icon');
     // Planes are drawn after the 14 airport markers, so index 14 is the first plane
-    const firstPlane = planeIcons[14] as HTMLElement; 
+    const firstPlane = planeIcons[14] as HTMLElement;
 
     firstPlane.click();
     fixture.detectChanges();
@@ -73,7 +73,7 @@ describe('MapComponent', () => {
 
     firstPlane.click();
     fixture.detectChanges();
-    
+
     const firstPathLineInstance = fixture.nativeElement.querySelector('.leaflet-interactive');
     expect(firstPathLineInstance).toBeTruthy();
 
@@ -82,7 +82,7 @@ describe('MapComponent', () => {
 
     const currentActiveFlight = service.selectedFlight();
     expect(currentActiveFlight).toBeTruthy();
-    
+
     const updatedPopup = fixture.nativeElement.querySelector('.leaflet-popup-content');
     expect(updatedPopup?.textContent).toContain(currentActiveFlight?.flightNumber);
   });

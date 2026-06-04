@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SidebarComponent } from './sidebar.component';
-import { FlightService } from '../flight.service';
+import { FlightService } from '../../core/services/flight.service';
 
 describe('SidebarComponent', () => {
   let component: SidebarComponent;
@@ -100,7 +100,7 @@ describe('SidebarComponent', () => {
     service.selectFlight(mockFlightProfile);
     fixture.detectChanges();
 
-    const detailCardHeader = fixture.nativeElement.querySelector('.text-lg.font-black');
+    const detailCardHeader = fixture.nativeElement.querySelector('app-flight-detail-card h2');
     expect(detailCardHeader).toBeTruthy();
     expect(detailCardHeader.textContent.trim()).toBe(mockFlightProfile.flightNumber);
   });
@@ -116,5 +116,3 @@ describe('SidebarComponent', () => {
     expect(service.selectedFlight()).toBeNull();
   });
 });
-
-

@@ -1,0 +1,40 @@
+<div
+  (click)="select.emit()"
+  class="group p-3 rounded-md border transition-all duration-200 cursor-pointer flex flex-col gap-1.5"
+  [class]="
+    isSelected()
+      ? 'bg-steel border-indigo shadow-sm'
+      : 'bg-obsidian border-graphite hover:border-iron'
+  "
+>
+  <div class="flex justify-between items-center">
+    <span
+      class="font-w590 text-sm transition-colors"
+      [class]="isSelected() ? 'text-indigo' : 'text-snow'"
+    >
+      {{ flight().flightNumber }}
+    </span>
+    <div
+      class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-sm text-[10px] font-w510 tracking-wide bg-onyx/50"
+    >
+      <span
+        class="w-1.5 h-1.5 rounded-full"
+        [class]="{
+          'bg-emerald': flight().status === 'Active',
+          'bg-crimson': flight().status === 'Delayed',
+          'bg-cyan': flight().status === 'Arrived',
+        }"
+      ></span>
+      <app-status-badge [status]="flight().status"></app-status-badge>
+    </div>
+  </div>
+
+  <div class="flex justify-between items-center text-xs mt-0.5">
+    <span class="font-mono text-fog text-[11px]">{{ flight().callsign }}</span>
+    <div class="flex items-center gap-1.5 font-mono text-[11px]">
+      <span class="font-w510 text-mist">{{ flight().origin }}</span>
+      <span class="text-slate text-[10px]">➔</span>
+      <span class="font-w510 text-mist">{{ flight().destination }}</span>
+    </div>
+  </div>
+</div>

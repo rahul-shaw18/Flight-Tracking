@@ -1,0 +1,17 @@
+<div class="flex items-center justify-between p-3 bg-obsidian border border-graphite rounded-xl">
+  <div class="flex flex-col">
+    <span class="text-xs font-w590 text-snow">{{ label() }}</span>
+    <span class="text-[10px] text-slate mt-0.5">{{ description() }}</span>
+  </div>
+  <button
+    (click)="toggle()"
+    class="w-10 h-6 rounded-full p-1 cursor-pointer transition-colors duration-200 focus:outline-none"
+    [class.bg-emerald]="checked()"
+    [class.bg-steel]="!checked()"
+  >
+    <div
+      class="bg-snow w-4 h-4 rounded-full shadow-md transform transition-transform duration-200"
+      [class.translate-x-4]="checked()"
+    ></div>
+  </button>
+</div>

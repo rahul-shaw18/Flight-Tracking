@@ -1,0 +1,145 @@
+<div
+  class="h-full flex flex-col bg-charcoal text-snow p-4 space-y-4 overflow-hidden select-none relative"
+>
+  <!-- Header -->
+  <div class="flex justify-between items-start">
+    <div>
+      <span class="text-xs font-w510 text-indigo uppercase tracking-wider block">Airport Hub</span>
+      <h2 class="text-lg font-w590 text-snow tracking-tight leading-tight mt-0.5">
+        {{ details().name }}
+      </h2>
+      <span class="text-[10px] font-mono text-fog uppercase tracking-wider"
+        >{{ airportCode() }} / {{ details().city }}</span
+      >
+    </div>
+    <button
+      (click)="clear.emit()"
+      class="text-[10px] text-fog hover:text-snow uppercase tracking-widest font-w510 transition-colors cursor-pointer"
+    >
+      Close ✕
+    </button>
+  </div>
+
+  <!-- Terminal Image Mockup -->
+  <div
+    class="relative w-full h-32 rounded-xl overflow-hidden bg-obsidian border border-graphite flex items-center justify-center"
+  >
+    <!-- Visual design of terminal -->
+    <div class="absolute inset-0 bg-linear-to-t from-onyx/80 to-transparent z-10"></div>
+    <svg
+      viewBox="0 0 100 100"
+      class="w-16 h-16 opacity-10 stroke-indigo"
+      fill="none"
+      stroke-width="2"
+    >
+      <path d="M10 90h80M20 90V40h60v50M35 40V10h30v30" />
+    </svg>
+    <div class="absolute bottom-2 left-3 z-20 text-[10px] text-fog font-mono">
+      Elevation: {{ details().elevation }}
+    </div>
+    <div class="absolute bottom-2 right-3 z-20 text-[10px] text-emerald flex items-center gap-1">
+      <span class="w-1.5 h-1.5 rounded-full bg-emerald"></span> Operational
+    </div>
+  </div>
+
+  <!-- Weather Grid -->
+  <div
+    class="grid grid-cols-3 gap-2 bg-obsidian border border-graphite p-2.5 rounded-xl text-center"
+  >
+    <div>
+      <span class="text-[8px] text-slate uppercase block font-w510 tracking-widest"
+        >Temperature</span
+      >
+      <span class="text-xs font-mono font-w590 text-snow mt-0.5 block">{{
+        details().weather.temp
+      }}</span>
+    </div>
+    <div>
+      <span class="text-[8px] text-slate uppercase block font-w510 tracking-widest">Wind</span>
+      <span class="text-xs font-mono font-w590 text-snow mt-0.5 block">{{
+        details().weather.wind
+      }}</span>
+    </div>
+    <div>
+      <span class="text-[8px] text-slate uppercase block font-w510 tracking-widest"
+        >Visibility</span
+      >
+      <span class="text-xs font-mono font-w590 text-snow mt-0.5 block">{{
+        details().weather.visibility
+      }}</span>
+    </div>
+  </div>
+
+  <!-- Tabs for Departures and Arrivals -->
+  <div class="flex-1 flex flex-col min-h-0 space-y-2">
+    <div class="flex border-b border-graphite text-xs">
+      <button
+        (click)="activeTab = 'departures'"
+        class="flex-1 pb-2 border-b-2 font-w510 tracking-wider text-center uppercase cursor-pointer transition-colors"
+        [class]="
+          activeTab === 'departures'
+            ? 'border-indigo text-indigo font-w590'
+            : 'border-transparent text-fog hover:text-snow'
+        "
+      >
+        Departures ({{ departures().length }})
+      </button>
+      <button
+        (click)="activeTab = 'arrivals'"
+        class="flex-1 pb-2 border-b-2 font-w510 tracking-wider text-center uppercase cursor-pointer transition-colors"
+        [class]="
+          activeTab === 'arrivals'
+            ? 'border-indigo text-indigo font-w590'
+            : 'border-transparent text-fog hover:text-snow'
+        "
+      >
+        Arrivals ({{ arrivals().length }})
+      </button>
+    </div>
+
+    <!-- Scrollable Flight List -->
+    <div class="flex-1 overflow-y-auto pr-1 custom-scrollbar space-y-2">
+      @if (activeTab === 'departures') {
+        @for (flight of departures(); track flight.id) {
+          <div
+            (click)="selectFlight(flight)"
+            class="bg-obsidian border border-graphite hover:border-iron rounded-md p-2.5 flex items-center justify-between cursor-pointer transition-all"
+          >
+            <div>
+              <span class="font-w590 text-xs text-snow block">{{ flight.flightNumber }}</span>
+              <span class="text-[9px] font-mono text-fog block">To: {{ flight.destination }}</span>
+            </div>
+            <div class="text-right">
+              <span class="text-[10px] text-fog font-mono block">{{
+                flight.estimatedDeparture | date: 'shortTime'
+              }}</span>
+              <span class="text-[9px] text-emerald block font-w510">Active</span>
+            </div>
+          </div>
+        } @empty {
+          <div class="text-center py-6 text-xs text-slate font-sans">No scheduled departures.</div>
+        }
+      } @else {
+        @for (flight of arrivals(); track flight.id) {
+          <div
+            (click)="selectFlight(flight)"
+            class="bg-obsidian border border-graphite hover:border-iron rounded-md p-2.5 flex items-center justify-between cursor-pointer transition-all"
+          >
+            <div>
+              <span class="font-w590 text-xs text-snow block">{{ flight.flightNumber }}</span>
+              <span class="text-[9px] font-mono text-fog block">From: {{ flight.origin }}</span>
+            </div>
+            <div class="text-right">
+              <span class="text-[10px] text-fog font-mono block">{{
+                flight.estimatedArrival | date: 'shortTime'
+              }}</span>
+              <span class="text-[9px] text-cyan block font-w510">Arriving</span>
+            </div>
+          </div>
+        } @empty {
+          <div class="text-center py-6 text-xs text-slate font-sans">No scheduled arrivals.</div>
+        }
+      }
+    </div>
+  </div>
+</div>
