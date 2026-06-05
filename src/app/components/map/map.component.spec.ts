@@ -63,7 +63,7 @@ describe('MapComponent', () => {
 
     const popupBubble = fixture.nativeElement.querySelector('.leaflet-popup-content');
     expect(popupBubble).toBeTruthy();
-    expect(popupBubble?.textContent).toContain('Airport:');
+    expect(popupBubble?.textContent).toContain('BOM');
   });
 
   it('should disable and strip down the previous flight tracking vector path line when a different plane target is selected', () => {
