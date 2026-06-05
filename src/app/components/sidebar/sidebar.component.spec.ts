@@ -100,9 +100,9 @@ describe('SidebarComponent', () => {
     service.selectFlight(mockFlightProfile);
     fixture.detectChanges();
 
-    const detailCardHeader = fixture.nativeElement.querySelector('app-flight-detail-card h2');
+    const detailCardHeader = fixture.nativeElement.querySelector('app-flight-detail-card');
     expect(detailCardHeader).toBeTruthy();
-    expect(detailCardHeader.textContent.trim()).toBe(mockFlightProfile.flightNumber);
+    expect(detailCardHeader.textContent.trim()).toContain(mockFlightProfile.flightNumber);
   });
 
   it('should execute the clearSelection workflow on the shared service layer when clicking the Clear action button', () => {

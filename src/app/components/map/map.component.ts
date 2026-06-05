@@ -85,11 +85,8 @@ export class MapComponent {
             [50.0379, 8.5622, 180000], // Frankfurt
           ];
 
-          cloudZones.forEach(([lat, lng, radius]) => {
+          cloudZones.forEach(([lat, lng]) => {
             L.circle([lat, lng], {
-              radius: radius,
-              color: '#cbd5e1',
-              fillColor: '#cbd5e1',
               fillOpacity: 0.15,
               weight: 1.5,
               className: 'weather-pulse-zone',
@@ -127,16 +124,13 @@ export class MapComponent {
         if (!this.rainLayerGroup) {
           this.rainLayerGroup = L.layerGroup().addTo(this.map);
           const rainZones: [number, number, number][] = [
-            [19.076, 72.8777, 150000], // Mumbai
-            [22.6547, 88.4467, 130000], // Kolkata
-            [49.0097, 2.5479, 160000], // Paris/CDG
+            [19.076, 72.8777, 150000],
+            [22.6547, 88.4467, 130000],
+            [49.0097, 2.5479, 160000],
           ];
 
-          rainZones.forEach(([lat, lng, radius]) => {
+          rainZones.forEach(([lat, lng]) => {
             L.circle([lat, lng], {
-              radius: radius,
-              color: '#60a5fa',
-              fillColor: '#60a5fa',
               fillOpacity: 0.18,
               weight: 1.5,
               className: 'weather-pulse-zone',
@@ -180,11 +174,8 @@ export class MapComponent {
             [25.2532, 55.3657, 200000], // Dubai
           ];
 
-          sunZones.forEach(([lat, lng, radius]) => {
+          sunZones.forEach(([lat, lng]) => {
             L.circle([lat, lng], {
-              radius: radius,
-              color: '#fbbf24',
-              fillColor: '#fbbf24',
               fillOpacity: 0.12,
               weight: 1.5,
               className: 'weather-pulse-zone',
@@ -384,10 +375,13 @@ export class MapComponent {
 
     // 2. Render airport markers once per unique airport
     uniqueAirports.forEach((coords, code) => {
+      const details = this.flightService.airportDetails(code);
       const airportMarker = L.marker(coords, { icon: this.airportIcon }).bindPopup(
-        `<div class="text-snow p-1 font-sans">
-          <h4 class="font-w590 text-indigo text-xs uppercase tracking-wider">Airport: ${code}</h4>
-          <p class="text-[10px] text-fog mt-0.5 font-sans">Terminal Operational Hub</p>
+        `<div class="text-snow font-sans">
+          <h6 class="font-w590 text-indigo text-xs tracking-wider max-w-[18ch] leading-relaxed wrap-break-word">
+       ${details.name}
+     </h6>
+          <span class="text-[10px] font-mono text-fog uppercase tracking-wider">${code}</span>
          </div>`,
       );
 
@@ -425,13 +419,13 @@ export class MapComponent {
       const planeMarker = L.marker(flight.coordinates, { icon: planeIcon });
 
       const popupHtml = `
-        <div class="map-popup text-snow p-1 font-sans">
+        <div class="map-popup flex flex-col gap-4 text-snow font-sans">
           <h3 class="font-w590 text-indigo tracking-tight text-sm">${flight.flightNumber}</h3>
-          <div class="text-[10px] text-fog mt-1 space-y-0.5 font-sans">
-            <p><span class="text-mist font-w510">Callsign:</span> <span class="font-mono">${flight.callsign}</span></p>
-            <p><span class="text-mist font-w510">Route:</span> <span class="font-mono">${flight.origin} ➔ ${flight.destination}</span></p>
-            <p><span class="text-mist font-w510">Heading:</span> <span class="font-mono">${Math.round(headingAngle)}°</span></p>
-            <p><span class="text-mist font-w510">Status:</span> 
+          <div class="text-[10px] text-fog flex flex-col gap-2 font-sans">
+            <div><span class="text-mist font-w510">Callsign:</span> <span class="font-mono">${flight.callsign}</span></div>
+            <div><span class="text-mist font-w510">Route:</span> <span class="font-mono">${flight.origin} ➔ ${flight.destination}</span></div>
+            <div><span class="text-mist font-w510">Heading:</span> <span class="font-mono">${Math.round(headingAngle)}°</span></div>
+            <div><span class="text-mist font-w510">Status:</span> 
               <span class="${
                 flight.status === 'Active'
                   ? 'text-emerald font-w590'
@@ -439,7 +433,7 @@ export class MapComponent {
                     ? 'text-crimson font-w590'
                     : 'text-cyan font-w590'
               }">${flight.status}</span>
-            </p>
+            </div>
           </div>
         </div>
       `;

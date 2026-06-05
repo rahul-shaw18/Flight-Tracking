@@ -103,7 +103,7 @@
         @for (flight of departures(); track flight.id) {
           <div
             (click)="selectFlight(flight)"
-            class="bg-emerald/[0.015] dark:bg-emerald/[0.03] border border-emerald/20 dark:border-emerald/30 hover:border-emerald/45 rounded-xl p-3 flex items-center justify-between cursor-pointer transition-all"
+            class="bg-emerald/1.5 dark:bg-emerald/3 border border-emerald/20 dark:border-emerald/30 hover:border-emerald/45 rounded-xl p-3 flex items-center justify-between cursor-pointer transition-all"
           >
             <div>
               <span class="font-w590 text-xs text-snow block">{{ flight.flightNumber }}</span>
@@ -123,7 +123,7 @@
         @for (flight of arrivals(); track flight.id) {
           <div
             (click)="selectFlight(flight)"
-            class="bg-cyan/[0.015] dark:bg-cyan/[0.03] border border-cyan/20 dark:border-cyan/30 hover:border-cyan/45 rounded-xl p-3 flex items-center justify-between cursor-pointer transition-all"
+            class="bg-cyan/1.5 dark:bg-cyan/3 border border-cyan/20 dark:border-cyan/30 hover:border-cyan/45 rounded-xl p-3 flex items-center justify-between cursor-pointer transition-all"
           >
             <div>
               <span class="font-w590 text-xs text-snow block">{{ flight.flightNumber }}</span>
