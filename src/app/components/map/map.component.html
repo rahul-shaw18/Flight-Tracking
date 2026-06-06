@@ -1,0 +1,99 @@
+<div #mapContainer class="w-full h-full min-h-125 relative">
+  <!-- Dynamic Flightradar24 bottom dock overlay -->
+</div>
+
+<div
+  class="absolute bottom-6 left-1/2 -translate-x-1/2 z-1000 mx-auto w-max bg-charcoal/70 dark:bg-charcoal/80 border border-graphite/40 dark:border-graphite px-2.5 py-2 rounded-full shadow-2xl flex items-center space-x-1.5 backdrop-blur-md transition-all duration-300"
+>
+  <!-- KPI Tab -->
+  <button
+    (click)="toggleKPI()"
+    class="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full text-xs font-w590 cursor-pointer transition-all duration-300 border border-transparent"
+    [class]="
+      flightService.showKPI()
+        ? 'bg-white dark:bg-steel/85 text-indigo dark:text-acid-lime shadow-md border-graphite/30 dark:border-graphite'
+        : 'text-slate dark:text-fog hover:text-snow hover:bg-steel/15 dark:hover:bg-steel/20'
+    "
+  >
+    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+    </svg>
+    <span class="tracking-wide text-[11px]">KPI</span>
+  </button>
+
+  <!-- Filters Tab -->
+  <button
+    (click)="toggleFilters()"
+    class="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full text-xs font-w590 cursor-pointer transition-all duration-300 border border-transparent"
+    [class]="
+      flightService.showFilterPanel()
+        ? 'bg-white dark:bg-steel/85 text-indigo dark:text-acid-lime shadow-md border-graphite/30 dark:border-graphite'
+        : 'text-slate dark:text-fog hover:text-snow hover:bg-steel/15 dark:hover:bg-steel/20'
+    "
+  >
+    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+    </svg>
+    <span class="tracking-wide text-[11px]">Filters</span>
+  </button>
+
+  <!-- Traffic Tab -->
+  <button
+    (click)="toggleTraffic()"
+    class="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full text-xs font-w590 cursor-pointer transition-all duration-300 border border-transparent"
+    [class]="
+      flightService.showTrafficPanel()
+        ? 'bg-white dark:bg-steel/85 text-indigo dark:text-acid-lime shadow-md border-graphite/30 dark:border-graphite'
+        : 'text-slate dark:text-fog hover:text-snow hover:bg-steel/15 dark:hover:bg-steel/20'
+    "
+  >
+    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+    </svg>
+    <span class="tracking-wide text-[11px]">Traffic</span>
+  </button>
+
+  <!-- Weather Tab -->
+  <button
+    (click)="toggleCloud()"
+    class="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full text-xs font-w590 cursor-pointer transition-all duration-300 border border-transparent"
+    [class]="
+      flightService.showCloudPanel()
+        ? 'bg-white dark:bg-steel/85 text-indigo dark:text-acid-lime shadow-md border-graphite/30 dark:border-graphite'
+        : 'text-slate dark:text-fog hover:text-snow hover:bg-steel/15 dark:hover:bg-steel/20'
+    "
+  >
+    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
+    </svg>
+    <span class="tracking-wide text-[11px]">Weather</span>
+  </button>
+
+  <!-- Theme Toggle Tab -->
+  <button
+    (click)="toggleTheme()"
+    class="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full text-xs font-w590 cursor-pointer text-slate dark:text-fog hover:text-snow hover:bg-steel/15 dark:hover:bg-steel/20 transition-all duration-300 border border-transparent"
+  >
+    <svg class="w-3.5 h-3.5 text-current" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+      @if (flightService.isDarkMode()) {
+        <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+      } @else {
+        <circle cx="12" cy="12" r="5" />
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42m12.72-12.72l1.42-1.42" />
+      }
+    </svg>
+    <span class="tracking-wide text-[11px]">Theme</span>
+  </button>
+
+  <!-- Reset Tab -->
+  <button
+    (click)="resetAllFilters()"
+    class="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full text-xs font-w590 cursor-pointer text-slate dark:text-fog hover:text-snow hover:bg-steel/15 dark:hover:bg-steel/20 transition-all duration-300 border border-transparent"
+  >
+    <svg class="w-3.5 h-3.5 text-current" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+      <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+      <path d="M3 3v5h5" />
+    </svg>
+    <span class="tracking-wide text-[11px]">Reset</span>
+  </button>
+</div>

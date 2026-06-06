@@ -1,0 +1,100 @@
+========================================================================
+             SKYOPS FLIGHT TRACKING & AIRSPACE CONTROL
+                       DESIGN EXPLANATION
+========================================================================
+
+Author: Development Team
+Target: Email Broadcast / Design Review
+Subject: System Architecture & Visual Design Overview
+
+------------------------------------------------------------------------
+1. EXECUTIVE SUMMARY & SYSTEM OVERVIEW
+------------------------------------------------------------------------
+The SkyOps Flight Tracking application is a premium, real-time-simulated flight analytics and weather control dashboard. Built as a high-fidelity Single Page Application (SPA), it allows airspace operators to track simulated flights, inspect individual airport hub operations, analyze real-time KPIs, and toggle regional meteorological overlays (rain, clouds, sun). 
+
+The system leverages the latest capabilities of Angular 21, Tailwind CSS v4, and Leaflet to provide a responsive, high-performance, and visually stunning user experience.
+
+------------------------------------------------------------------------
+2. SYSTEM ARCHITECTURE & CODE STRUCTURE
+------------------------------------------------------------------------
+The application is structured around a strict modular design that separates state management, geospatial mapping, and visual components.
+
+* src/app/core:
+  Houses the core models (interfaces defining Flight, Airport, and weather shapes), global constant mock data, and the central FlightService.
+  
+* src/app/components/map:
+  Manages the Leaflet map container, drawing vectors, adding dynamic airport and aircraft markers, and applying meteorological layers.
+  
+* src/app/components/sidebar:
+  Implements the controller dashboard which includes:
+  - KPI Cards: Aggregated counts of arriving, delayed, and active flights.
+  - Search & Filters Drawer: Filtering flights by callsign, airline code, origin, or destination.
+  - Flight List View: A reactive vertical list highlighting active, delayed, or selected aircraft.
+  - Flight & Airport Detail Cards: Interactive overlays displaying specific telemetry, schedules, and local weather.
+
+* src/app/shared:
+  Contains global atom UI elements (toggle switches, status badges) and utilities (trigonometric bearing calculations).
+
+------------------------------------------------------------------------
+3. STATE MANAGEMENT & REACTIVITY (ANGULAR SIGNALS)
+------------------------------------------------------------------------
+Reactivity is built from the ground up using Angular Signals (introduced in Angular 16/17 and modernized in Angular 21). Rather than subscribing to RxJS observables or triggering manual change detection cycles, the application employs a centralized state store via the FlightService:
+
+* Primary Signals:
+  - Search / Filters: searchTerm, statusFilter, originFilter, destinationFilter.
+  - Selection State: selectedFlight, selectedAirport.
+  - Map Overlays: showCloudOverlay, showRainOverlay, showSunOverlay.
+  - Playback Engine: isAnimating, animationProgress (0-100%), animationSpeed (1x, 5x, 10x, 20x).
+
+* Computed Derived States:
+  By using computed(), the application automatically calculates downstream states synchronously and efficiently, eliminating ExpressionChangedAfterItHasBeenChecked errors:
+  - filteredFlights: Re-evaluates automatically whenever any search or filter signal changes.
+  - kpis: Dynamically computes aggregate numbers of active, delayed, and arrived flights from the filtered flight list.
+  - departuresForAirport / arrivalsForAirport: Filters and returns flights corresponding to a selected airport code.
+
+------------------------------------------------------------------------
+4. GEOSPATIAL MAP & SIMULATION ENGINE
+------------------------------------------------------------------------
+Geospatial logic is integrated directly into Leaflet to map visual coordinates to geographical assets:
+
+* Map Themes:
+  Dynamically toggles CartoDB base tiles between Dark Matter (dark mode) and Positron (light mode) based on the user's selected theme.
+
+* Flight Paths & Bearings:
+  When a flight is selected, a poly-line vector is drawn between the origin and destination coordinates. The aircraft's current coordinate marker is rotated on the map using a trigonometric bearing calculation:
+  
+  bearing = atan2(
+    sin(dLon) * cos(lat2),
+    cos(lat1) * sin(lat2) - sin(lat1) * cos(lat2) * cos(dLon)
+  )
+  
+  This bearing is applied directly via CSS transforms (`transform: rotate(N deg)`) to align the SVG aircraft pointer in the direction of flight.
+
+* Simulation Playback Engine:
+  Uses a requestAnimationFrame loop in FlightService. It increments a normalized `animationProgress` signal (0-100%) and uses linear interpolation (lerping) between origin and destination coordinates to animate the plane marker smoothly across the map.
+
+------------------------------------------------------------------------
+5. UI/UX DESIGN & STYLING SYSTEM
+------------------------------------------------------------------------
+The visual presentation uses a glassmorphic dark-theme configuration designed to emulate real-world air traffic control panels:
+
+* Typography & Hierarchy:
+  Google Fonts' Inter and robust monospaced font families provide clear, readable telemetry data at a glance.
+  
+* Premium Color Palette:
+  Utilizes Tailwind CSS v4's modern utility layers with a customized dark palette:
+  - Obsidian/Charcoal base background colors (`bg-charcoal`, `bg-obsidian`).
+  - High-visibility operational accents: Emerald (`text-emerald`) for active status, Crimson (`text-crimson`) for delayed, and Cyan (`text-cyan`) for arrived.
+  - Selective glassmorphic styling using backdrop filters (`backdrop-blur`).
+
+* Layout Constraints & Overlays:
+  All control menus and details drawer components utilize absolute positioning (`absolute inset-0`) relative to their flex containers. This ensures correct scrolling zones via `.overflow-y-auto` instead of expanding the outer viewport.
+
+------------------------------------------------------------------------
+6. TESTING STRATEGY
+------------------------------------------------------------------------
+The application is tested using Vitest to enforce functional correctness:
+- Isolated Service Testing: Verifies state changes, filtering behaviors, and trigonometric bearing calculation math.
+- Component Integration Testing: Uses Angular's TestBed to assert inputs/outputs, click triggers, UI tab switching, and reactive template changes.
+- UI Event Simulation: Verifies that scrubber timeline moves, simulation playback speed adjustments, and selection clicks work seamlessly.
+========================================================================
