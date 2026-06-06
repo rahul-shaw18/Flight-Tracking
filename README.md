@@ -1,59 +1,60 @@
-# FlightTracking
+# SkyOps Flight Tracking & Airspace Control - Setup Guide
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.13.
+This guide provides setup, installation, and testing instructions for the SkyOps Flight Tracking and Airspace Control dashboard.
 
-## Development server
+---
 
-To start a local development server, run:
+## Prerequisites
 
+Before setting up the project, make sure your development machine has the following tools installed:
+- **Node.js**: v20.0.0 or higher (LTS recommended)
+- **npm**: v10.0.0 or higher
+- **Angular CLI**: Managed locally through the project's development dependencies
+
+---
+
+## Setup & Installation
+
+### 1. Install Dependencies
+To install the project dependencies, navigate to the root directory of the project in your terminal and run:
 ```bash
-ng serve
+npm install
+```
+This will fetch and configure all packages, including **Angular 21**, **Tailwind CSS v4**, **Leaflet**, and **Vitest**.
+
+### 2. Run the Development Server
+To start the local Angular development server:
+```bash
+npm run start
+```
+or run directly via Angular CLI:
+```bash
+npx ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Once compilation is complete, open your web browser and go to **`http://localhost:4200/`**. The application will automatically hot-reload whenever you save changes to your source files.
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
+### 3. Build for Production
+To compile the application with full optimizations and bundle production assets:
 ```bash
-ng generate component component-name
+npm run build
+```
+The production bundle will be generated inside the `dist/` directory, ready for static deployment to standard cloud platforms (e.g., Netlify, Vercel, Firebase Hosting).
+
+---
+
+## Testing Guide
+
+This project is configured with **Vitest** via the Angular build pipeline (`@angular/build:unit-test`), offering rapid unit testing execution inside a JSDOM environment.
+
+### Run Tests Once
+To run all tests once and verify compile/execution correctness:
+```bash
+npx ng test --watch=false
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
+### Run Tests in Watch Mode
+To run tests continuously during active code changes:
 ```bash
-ng generate --help
+npx ng test
 ```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
