@@ -13,7 +13,7 @@
     !flightService.showCloudPanel()
   ) {
     <div
-      class="absolute inset-0 flex flex-col p-5 space-y-5 bg-charcoal"
+      class="absolute w-full flex flex-col p-5 space-y-5 bg-charcoal"
       animate.enter="animate-slide-in-delayed"
       animate.leave="animate-slide-out"
     >
@@ -102,7 +102,7 @@
   <!-- FILTER CONFIGURATIONS OVERLAY VIEW -->
   @if (flightService.showFilterPanel()) {
     <div
-      class="absolute inset-0 flex flex-col p-5 space-y-5 overflow-hidden bg-charcoal"
+      class="absolute w-full flex flex-col p-5 space-y-5 overflow-hidden bg-charcoal"
       animate.enter="animate-slide-in-delayed"
       animate.leave="animate-slide-out"
     >
@@ -291,7 +291,7 @@
   <!-- CLOUDS CONFIGURATIONS OVERLAY VIEW -->
   @if (flightService.showCloudPanel()) {
     <div
-      class="absolute inset-0 flex flex-col p-5 space-y-5 overflow-hidden bg-charcoal"
+      class="absolute w-full flex flex-col p-5 space-y-5 overflow-hidden bg-charcoal"
       animate.enter="animate-slide-in-delayed"
       animate.leave="animate-slide-out"
     >
